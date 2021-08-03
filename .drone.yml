@@ -1,0 +1,31 @@
+kind: pipeline
+name: build
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+  - name: build
+    image: amazoncorretto:8
+    volumes:
+      - name: deps
+        path: /root/.m2
+    commands:
+      - ./mvnw package
+
+  - name: release
+    image: node:13
+    commands:
+      - npx semantic-release
+    environment:
+      GITHUB_TOKEN:
+        from_secret: github_token
+    when:
+      event:
+        exclude:
+        - tag
+
+volumes:
+  - name: deps
+    temp: {}
