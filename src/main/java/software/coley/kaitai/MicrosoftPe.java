@@ -68,10 +68,6 @@ public class MicrosoftPe extends KaitaiStruct {
 	 * @see <a href="https://docs.microsoft.com/en-us/windows/desktop/debug/pe-format#the-attribute-certificate-table-image-only">Source</a>
 	 */
 	public static class CertificateEntry extends KaitaiStruct {
-		public static CertificateEntry fromFile(String fileName) throws IOException {
-			return new CertificateEntry(new ByteBufferKaitaiStream(fileName));
-		}
-
 		public enum CertificateRevision {
 			REVISION_1_0(256),
 			REVISION_2_0(512);
@@ -193,10 +189,6 @@ public class MicrosoftPe extends KaitaiStruct {
 	}
 
 	public static class OptionalHeaderWindows extends KaitaiStruct {
-		public static OptionalHeaderWindows fromFile(String fileName) throws IOException {
-			return new OptionalHeaderWindows(new ByteBufferKaitaiStream(fileName));
-		}
-
 		public enum SubsystemEnum {
 			UNKNOWN(0),
 			NATIVE(1),
@@ -440,10 +432,6 @@ public class MicrosoftPe extends KaitaiStruct {
 	}
 
 	public static class OptionalHeaderDataDirs extends KaitaiStruct {
-		public static OptionalHeaderDataDirs fromFile(String fileName) throws IOException {
-			return new OptionalHeaderDataDirs(new ByteBufferKaitaiStream(fileName));
-		}
-
 		public OptionalHeaderDataDirs(KaitaiStream _io) {
 			this(_io, null, null);
 		}
@@ -565,10 +553,6 @@ public class MicrosoftPe extends KaitaiStruct {
 	}
 
 	public static class DataDir extends KaitaiStruct {
-		public static DataDir fromFile(String fileName) throws IOException {
-			return new DataDir(new ByteBufferKaitaiStream(fileName));
-		}
-
 		public DataDir(KaitaiStream _io) {
 			this(_io, null, null);
 		}
@@ -612,10 +596,6 @@ public class MicrosoftPe extends KaitaiStruct {
 	}
 
 	public static class CoffSymbol extends KaitaiStruct {
-		public static CoffSymbol fromFile(String fileName) throws IOException {
-			return new CoffSymbol(new ByteBufferKaitaiStream(fileName));
-		}
-
 		public CoffSymbol(KaitaiStream _io) {
 			this(_io, null, null);
 		}
@@ -711,10 +691,6 @@ public class MicrosoftPe extends KaitaiStruct {
 	}
 
 	public static class PeHeader extends KaitaiStruct {
-		public static PeHeader fromFile(String fileName) throws IOException {
-			return new PeHeader(new ByteBufferKaitaiStream(fileName));
-		}
-
 		public PeHeader(KaitaiStream _io) {
 			this(_io, null, null);
 		}
@@ -804,10 +780,6 @@ public class MicrosoftPe extends KaitaiStruct {
 	}
 
 	public static class OptionalHeader extends KaitaiStruct {
-		public static OptionalHeader fromFile(String fileName) throws IOException {
-			return new OptionalHeader(new ByteBufferKaitaiStream(fileName));
-		}
-
 		public OptionalHeader(KaitaiStream _io) {
 			this(_io, null, null);
 		}
@@ -857,10 +829,6 @@ public class MicrosoftPe extends KaitaiStruct {
 	}
 
 	public static class Section extends KaitaiStruct {
-		public static Section fromFile(String fileName) throws IOException {
-			return new Section(new ByteBufferKaitaiStream(fileName));
-		}
-
 		public Section(KaitaiStream _io) {
 			this(_io, null, null);
 		}
@@ -964,10 +932,6 @@ public class MicrosoftPe extends KaitaiStruct {
 	}
 
 	public static class CertificateTable extends KaitaiStruct {
-		public static CertificateTable fromFile(String fileName) throws IOException {
-			return new CertificateTable(new ByteBufferKaitaiStream(fileName));
-		}
-
 		public CertificateTable(KaitaiStream _io) {
 			this(_io, null, null);
 		}
@@ -1012,9 +976,7 @@ public class MicrosoftPe extends KaitaiStruct {
 	}
 
 	public static class MzPlaceholder extends KaitaiStruct {
-		public static MzPlaceholder fromFile(String fileName) throws IOException {
-			return new MzPlaceholder(new ByteBufferKaitaiStream(fileName));
-		}
+		private static final int MZ = 23117;
 
 		public MzPlaceholder(KaitaiStream _io) {
 			this(_io, null, null);
@@ -1032,21 +994,21 @@ public class MicrosoftPe extends KaitaiStruct {
 		}
 
 		private void _read() {
-			this.magic = this._io.readBytes(2);
-			if (!(Arrays.equals(magic(), new byte[]{77, 90}))) {
+			this.magic = this._io.readU2le();
+			if (magic == MZ) {
 				throw new KaitaiStream.ValidationNotEqualError(new byte[]{77, 90}, magic(), _io(), "/types/mz_placeholder/seq/0");
 			}
 			this.data1 = this._io.readBytes(58);
 			this.ofsPe = this._io.readU4le();
 		}
 
-		private byte[] magic;
+		private int magic;
 		private byte[] data1;
 		private long ofsPe;
 		private final MicrosoftPe _root;
 		private final MicrosoftPe _parent;
 
-		public byte[] magic() {
+		public int magic() {
 			return magic;
 		}
 
@@ -1071,10 +1033,6 @@ public class MicrosoftPe extends KaitaiStruct {
 	}
 
 	public static class OptionalHeaderStd extends KaitaiStruct {
-		public static OptionalHeaderStd fromFile(String fileName) throws IOException {
-			return new OptionalHeaderStd(new ByteBufferKaitaiStream(fileName));
-		}
-
 		public OptionalHeaderStd(KaitaiStream _io) {
 			this(_io, null, null);
 		}
@@ -1165,10 +1123,6 @@ public class MicrosoftPe extends KaitaiStruct {
 	 * @see "3.3. COFF File Header (Object and Image)"
 	 */
 	public static class CoffHeader extends KaitaiStruct {
-		public static CoffHeader fromFile(String fileName) throws IOException {
-			return new CoffHeader(new ByteBufferKaitaiStream(fileName));
-		}
-
 		public enum MachineType {
 			UNKNOWN(0),
 			I386(332),
@@ -1337,10 +1291,6 @@ public class MicrosoftPe extends KaitaiStruct {
 	}
 
 	public static class Annoyingstring extends KaitaiStruct {
-		public static Annoyingstring fromFile(String fileName) throws IOException {
-			return new Annoyingstring(new ByteBufferKaitaiStream(fileName));
-		}
-
 		public Annoyingstring(KaitaiStream _io) {
 			this(_io, null, null);
 		}

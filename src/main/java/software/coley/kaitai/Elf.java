@@ -1218,10 +1218,6 @@ public class Elf extends KaitaiStruct {
 	}
 
 	public static class EndianElf extends KaitaiStruct {
-		public static EndianElf fromFile(String fileName) throws IOException {
-			return new EndianElf(new ByteBufferKaitaiStream(fileName));
-		}
-
 		private Boolean _is_le;
 
 		public EndianElf(KaitaiStream _io) {
